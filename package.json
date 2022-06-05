@@ -1,0 +1,15 @@
+{
+  "name": "jupyter-sort",
+  "version": "1.0.0",
+  "description": "Sort Jupyter-notebook cells by execution order.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "K.D.P.Ross",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "fs-extra": "^10.1.0",
+    "lodash": "^4.17.21"
+  }
+}
