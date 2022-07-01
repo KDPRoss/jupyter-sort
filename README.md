@@ -33,6 +33,13 @@ overwriting the notebook's file.
   will *not* automatically refresh after this; run the
   `Reload Notebook from Disk` function to get them in-synch.
 
+## Caveats
+
+- Non-code (e.g., markdown) cells will lack
+  `execution_count` values and, thus, will end up at the end
+  of the notebook. (It's not clear, even in principle, what
+  could be done to get more-correct behaviour.)
+
 ## FAQ
 
 - Is this code supported?
