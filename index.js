@@ -11,6 +11,32 @@ const fail = (s) => {
   process.exit(1);
 };
 
+// Could do this with a `reduce`, but I think that this is
+// more clear.
+const groupCells = (cells) => {
+  const numberedGroups = [];
+  const unnumbered = [];
+  let cur = [];
+
+  cells.forEach((c) => {
+    cur.push(c);
+
+    if ('code' === c.cell_type) {
+      if (c.execution_count) {
+        numberedGroups.push([c.execution_count, cur]);
+      } else {
+        unnumbered.push(...cur);
+      }
+
+      cur = [];
+    }
+  });
+
+  unnumbered.push(...cur);
+
+  return [ numberedGroups, unnumbered ];
+};
+
 const main = () => {
   [
     '/----------------------------------------------------\\',
@@ -42,18 +68,13 @@ const main = () => {
     // not much we can do about this: Partition those out
     // and shove them (in stable order) at the end.
     const nb = JSON.parse(nbString);
-    const [ numbered, unnumbered ] = _.partition(nb.cells, ({ execution_count }) => {
-      const res = undefined !== execution_count;
-      return res;
-    });
-    if (unnumbered.length > 0) {
-      console.log(`  There are ${unnumbered.length} cells missing 'execution_count'; putting them at the end.`);
-    }
 
+    const [ numbered, unnumbered ] = groupCells(nb.cells);
     const cells = [
-      ..._.sortBy(numbered, (cell) => cell.execution_count),
-      ...unnumbered,
+      ..._.flatten(_.sortBy(numbered, ([ pos ]) => pos).map(([ _, cell ]) => cell)),
+      ...unnumbered
     ];
+
     const nbOut = {
       ...nb,
       cells,
