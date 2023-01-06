@@ -1,22 +1,26 @@
-// @ts-check
-const _ = require('lodash');
-const fs = require('fs-extra');
+import * as _ from 'lodash';
+import * as fs from 'fs-extra';
 
 // Some constants; could make configurable; meh.
 const backupQ = true;
 const backupSuffix = '-backup';
 
-const fail = (s) => {
+const fail = (s: string): never => {
   console.error(s);
   process.exit(1);
 };
 
+interface Cell {
+  cell_type: string;
+  execution_count: number | undefined;
+}
+
 // Could do this with a `reduce`, but I think that this is
 // more clear.
-const groupCells = (cells) => {
-  const numberedGroups = [];
-  const unnumbered = [];
-  let cur = [];
+const groupCells = (cells: Array<Cell>): [Array<[number, Array<Cell>]>, Array<Cell>] => {
+  const numberedGroups: Array<[number, Array<Cell>]> = [];
+  const unnumbered: Array<Cell> = [];
+  let cur: Array<Cell> = [];
 
   cells.forEach((c) => {
     cur.push(c);
@@ -37,7 +41,7 @@ const groupCells = (cells) => {
   return [ numberedGroups, unnumbered ];
 };
 
-const main = () => {
+const main = async () => {
   [
     '/----------------------------------------------------\\',
     '|                                                    |',
@@ -54,21 +58,21 @@ const main = () => {
     const f = process.argv[ 2 ];
     console.log(`Processing '${f}' ...`);
 
-    const nbString = fs.readFileSync(f).toString();
+    const nbString = await fs.readFile(f).toString();
     console.log('  Read notebook file.');
 
     if (backupQ) {
       const backupFilename = `${f}${backupSuffix}`;
 
-      fs.writeFileSync(backupFilename, nbString);
+      await fs.writeFile(backupFilename, nbString);
       console.log(`  Wrote backup to '${backupFilename}'.`);
     }
+
+    const nb = JSON.parse(nbString);
 
     // Cells very well may be missing an `execution_count`;
     // not much we can do about this: Partition those out
     // and shove them (in stable order) at the end.
-    const nb = JSON.parse(nbString);
-
     const [ numbered, unnumbered ] = groupCells(nb.cells);
     const cells = [
       ..._.flatten(_.sortBy(numbered, ([ pos ]) => pos).map(([ _, cell ]) => cell)),
@@ -81,7 +85,7 @@ const main = () => {
     };
     console.log(`  Sorted ${numbered.length} cells; ${cells.length} total output cells.`);
 
-    fs.writeFileSync(f, JSON.stringify(nbOut));
+    await fs.writeFile(f, JSON.stringify(nbOut));
     console.log(`  Wrote output to ${f}.`);
 
     console.log('\nHave a nice day! :~}');
@@ -91,3 +95,4 @@ const main = () => {
 };
 
 main();
+
