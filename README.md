@@ -6,9 +6,10 @@ out-of-textual-order, which can leave the final notebook in
 a state whereby it wouldn't run top-to-bottom.
 
 Solution(ish(?)): This repo! It turns out that Jupyter
-notebooks are just giant JSON blobs. I hacked this Node code
-together after realising this (and being unable to find a
-function in Jupyter Lab to do this out-of-the-box).
+notebooks are just giant JSON blobs. I hacked this
+TypeScript code together after realising this (and being
+unable to find a function in Jupyter Lab to do this
+out-of-the-box).
 
 ## What does this code do?
 
@@ -32,9 +33,9 @@ idempotent.
 
 - Grab the code.
 
-- Run `npm install`.
+- Run `bun install`.
 
-- Run `node index.js {path-to-notebook}`.
+- Run `bun index.ts {path-to-notebook}`.
 
 - Enjoy winning at life ... or, at least, at using Jupyter.
 
@@ -52,6 +53,11 @@ idempotent.
     unleashes an AGI that destroys humanity (although, I'd
     be *incredibly* surprised if it did something other than
     re-ordering the cells in your notebook).
+
+- What's a `bun`?
+
+  - All questions related to this are answered
+    [here](https://bun.sh).
 
 - Can I make my own Jupyter kernel for my favourite niche
   language?

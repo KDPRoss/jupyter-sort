@@ -3,4 +3,3 @@
 *.ipynb
 *.ipynb-backup
 node_modules
-package-lock.json

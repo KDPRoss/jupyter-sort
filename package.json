@@ -1,21 +1,21 @@
 {
-  "name": "jupyter-sort",
-  "version": "1.0.0",
-  "description": "Sort Jupyter-notebook cells by execution order.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "K.D.P.Ross",
-  "license": "UNLICENSED",
   "dependencies": {
+    "bun-types": "^1.0.1",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21"
   },
+  "description": "Sort Jupyter-notebook cells by execution order.",
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/lodash": "^4.14.191",
-    "@types/node": "^18.11.18",
-    "typescript": "^4.9.4"
-  }
+    "@types/node": "^18.11.18"
+  },
+  "license": "UNLICENSED",
+  "main": "index.js",
+  "name": "jupyter-sort",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "version": "1.0.0"
 }

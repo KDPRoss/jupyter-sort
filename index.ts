@@ -58,7 +58,7 @@ const main = async () => {
     const f = process.argv[ 2 ];
     console.log(`Processing '${f}' ...`);
 
-    const nbString = await fs.readFile(f).toString();
+    const nbString = await fs.readFile(f, 'utf-8');
     console.log('  Read notebook file.');
 
     if (backupQ) {
@@ -95,4 +95,3 @@ const main = async () => {
 };
 
 main();
-
